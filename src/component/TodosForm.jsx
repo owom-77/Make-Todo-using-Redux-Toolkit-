@@ -8,8 +8,10 @@ export default function TodosForm({todo}) {
     let [isEdit,setIsEdit] = useState(false)
     let dispatch = useDispatch()
 
-    let edit = ()=>{
-      dispatch(updateTodo(todo.id,msg))
+    let edit = (id)=>{
+      // console.log(id)
+      // console.log(msg)
+      dispatch(updateTodo({id,msg}))
       setIsEdit(false)
     }
     
@@ -18,31 +20,33 @@ export default function TodosForm({todo}) {
           className={`flex border border-black/10 rounded-lg px-3 py-1.5 gap-x-3 shadow-sm shadow-white/50 duration-300  text-black`}
       >
           <input
-              className={`border outline-none w-full bg-transparent rounded-lg text-white
-                `}
-              type = 'text'
+              type="checkbox"
+              className="cursor-pointer"
+          />
+          <input
+              type="text"
+              className={`border outline-none w-full bg-transparent rounded-lg text-white`}
               value={msg}
-              onChange={(e)=>setMsg(e.target.value)}
-              readOnly = {!isEdit}
+              onChange={(e) => setMsg(e.target.value)}
+              readOnly={!isEdit}
           />
           {/* Edit, Save Button */}
           <button
               className="inline-flex w-8 h-8 rounded-lg text-sm border border-black/10 justify-center items-center bg-gray-50 hover:bg-gray-100 shrink-0 disabled:opacity-50"
-              onClick={()=>{
-                if(isEdit){
-                  edit()
-                }else{
-                  setIsEdit((prev)=>!prev)
-                }
+              onClick={() => {
+                  
+                  if (isEdit) {
+                      edit(todo.id);
+                  } else setIsEdit((prev) => !prev);
               }}
+              disabled={todo.completed}
           >
-           
               {isEdit ? "📁" : "✏️"}
           </button>
           {/* Delete Todo Button */}
           <button
               className="inline-flex w-8 h-8 rounded-lg text-sm border border-black/10 justify-center items-center bg-gray-50 hover:bg-gray-100 shrink-0"
-              onClick={()=>dispatch(removeTodo(todo.id))}
+              onClick={() => dispatch(removeTodo(todo.id))}
           >
               ❌
           </button>

@@ -7,6 +7,8 @@ function App() {
 
   let todos = useSelector((state)=>state.todos)
 
+  console.log(todos)
+
   return (
     
       <div className="bg-[#172842] min-h-screen py-8">
@@ -19,7 +21,7 @@ function App() {
                     <div className="flex flex-wrap gap-y-3">
                         {/*Loop and Add TodoItem here */}
                         {todos.map((val)=>(
-                          <div>
+                          <div key={val.id}>
                             <TodosForm todo = {val}/>
                           </div>
                         ))}
