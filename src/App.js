@@ -1,14 +1,31 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
 import AddTodo from './component/AddTodo';
-import TodosForm from './component/TodosForm';
+import TodoItem from './component/TodoItem';
+import { useEffect } from 'react';
+import { addTodo } from './store/TodoSlice';
 
 function App() {
 
-  let todos = useSelector((state)=>state.todos)
+    let todos = useSelector((state)=>state.todos)
+    let dispatch = useDispatch()
 
-  console.log(todos)
+    useEffect(()=>{
+        let todo = JSON.parse(localStorage.getItem("todos"))
+        if(todo.length > 0){
+            todo.map((val)=>{
+                console.log(val)
+                dispatch(addTodo(val.msg))
+            })
+        }
+    },[])
 
+    useEffect(()=>{
+        localStorage.setItem('todos',JSON.stringify(todos))
+    },[todos])
+
+    //console.log(todos)
+  
   return (
     
       <div className="bg-[#172842] min-h-screen py-8">
@@ -21,9 +38,9 @@ function App() {
                     <div className="flex flex-wrap gap-y-3">
                         {/*Loop and Add TodoItem here */}
                         {todos.map((val)=>(
-                          <div key={val.id}>
-                            <TodosForm todo = {val}/>
-                          </div>
+                            <div key={val.id}>
+                                <TodoItem todo = {val}/>
+                            </div>
                         ))}
                     </div>
                 </div>
